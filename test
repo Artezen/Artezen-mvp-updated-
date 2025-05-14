@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Artezen MVP</title>
+  <style>
+    body {
+      margin: 0;
+      font-family: sans-serif;
+      background-color: #0f0f0f;
+      color: #f2f2f2;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+    }
+
+    .container {
+      max-width: 500px;
+      width: 100%;
+      background: #1a1a1a;
+      border-radius: 12px;
+      padding: 2rem;
+      box-shadow: 0 0 20px rgba(0,0,0,0.3);
+    }
+
+    h1 {
+      font-size: 1.5rem;
+      margin-bottom: 1rem;
+      text-align: center;
+    }
+
+    label, select, input[type="checkbox"] {
+      display: block;
+      margin: 1rem 0 0.5rem;
+    }
+
+    select {
+      width: 100%;
+      padding: 0.5rem;
+      border-radius: 6px;
+      border: none;
+    }
+
+    button {
+      margin-top: 2rem;
+      width: 100%;
+      padding: 1rem;
+      border: none;
+      background: #3b82f6;
+      color: white;
+      font-size: 1rem;
+      border-radius: 8px;
+      cursor: pointer;
+    }
+
+    .hidden {
+      display: none;
+    }
+
+    .session-card {
+      background-color: #2a2a2a;
+      padding: 1rem;
+      margin-top: 1rem;
+      border-radius: 8px;
+    }
+
+    .feedback-buttons button {
+      width: 100%;
+      margin-top: 1rem;
+      background-color: #333;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div id="onboarding">
+      <h1>How do you want to feel today?</h1>
+      <label for="goal">Select your goal:</label>
+      <select id="goal">
+        <option value="calm">Calm & Resilient</option>
+        <option value="focus">Clear-headed & Focused</option>
+        <option value="grounded">Comfortable & Grounded</option>
+        <option value="energized">Energized & Motivated</option>
+      </select>
+
+      <label>Pick up to 2 values:</label>
+      <input type="checkbox" value="clarity"> Clarity<br>
+      <input type="checkbox" value="trust"> Self-Trust<br>
+      <input type="checkbox" value="flow"> Flow<br>
+      <input type="checkbox" value="release"> Release<br>
+      <input type="checkbox" value="activation"> Activation<br>
+
+      <button onclick="startSession()">Continue</button>
+    </div>
+
+    <div id="session" class="hidden">
+      <h1>Your Session</h1>
+      <div class="session-card" id="sessionContent">
+        <!-- dynamic content goes here -->
+      </div>
+      <button onclick="showFeedback()">Finish Session</button>
+    </div>
+
+    <div id="feedback" class="hidden">
+      <h1>How was your session?</h1>
+      <div class="feedback-buttons">
+        <button onclick="thankUser('helpful')">Helpful</button>
+        <button onclick="thankUser('neutral')">Neutral</button>
+        <button onclick="thankUser('notforme')">Not for me</button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    function startSession() {
+      const goal = document.getElementById('goal').value;
+      const values = Array.from(document.querySelectorAll('input[type=checkbox]:checked'))
+                          .map(cb => cb.value).slice(0, 2);
+
+      document.getElementById('onboarding').classList.add('hidden');
+      document.getElementById('session').classList.remove('hidden');
+
+      const sessionText = `You chose the goal: <strong>${goal}</strong> and value(s): <strong>${values.join(", ")}</strong>.<br><br>Here's your suggested session:<br>- 1 min Breath<br>- 2 min Stretch<br>- 1 min Reset`;
+      document.getElementById('sessionContent').innerHTML = sessionText;
+    }
+
+    function showFeedback() {
+      document.getElementById('session').classList.add('hidden');
+      document.getElementById('feedback').classList.remove('hidden');
+    }
+
+    function thankUser(choice) {
+      alert(`Thank you for your feedback: ${choice}`);
+      location.reload(); // restart app
+    }
+  </script>
+</body>
+</html>
